@@ -1,5 +1,5 @@
-from models import DataBase, Level, Space
-from errors import *
+from src.infrastructure.models import DataBase, Level, Space
+from utils.errors import *
 
 db: DataBase | None = None
 def init_db():

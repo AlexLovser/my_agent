@@ -1,8 +1,8 @@
 from pydantic import BaseModel
-from config import settings
+from utils.config import settings
 
-from app_agents.base_agent import BaseAgent
-from tools import(
+from src.app_agents.base_agent import BaseAgent
+from src.infrastructure.tools import(
     get_level,
     get_space,
     insert_level,

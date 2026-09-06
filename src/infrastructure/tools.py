@@ -1,7 +1,7 @@
 from pydantic import ValidationError, BaseModel
-from dto import Response, Status
-from errors import *
-import repository as Repo
+from utils.dto import Response, Status
+from utils.errors import *
+import src.infrastructure.repository as Repo
 import functools
 import logging
 import sys

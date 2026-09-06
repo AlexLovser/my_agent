@@ -1,10 +1,6 @@
-import sys
-
-sys.stdout.reconfigure(encoding="utf-8")
-
-from repository import print_db
-from runner import Runner
-from tools import insert_level, insert_space, update_level, update_space
+from src.infrastructure.repository import print_db
+from src.infrastructure.runner import Runner
+from src.infrastructure.tools import insert_level, insert_space, update_level, update_space
 
 TOOL_MAP = {
     "insert_level": insert_level,

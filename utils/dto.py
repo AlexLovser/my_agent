@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from repository import Level, Space
+from src.infrastructure.repository import Level, Space
 from enum import Enum
 
 class Status(Enum):

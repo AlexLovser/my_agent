@@ -1,9 +1,6 @@
-import sys
+from src.app_agents.main_agent.agent import MainAgent
+from src.infrastructure.repository import print_db
 
-sys.stdout.reconfigure(encoding="utf-8")
-
-from app_agents.main_agent.agent import MainAgent
-from repository import print_db
 
 PROMPTS = [
     "Ajoute un niveau Rez-de-chaussée avec floor_number 0.",

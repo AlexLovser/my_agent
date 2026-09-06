@@ -1,7 +1,7 @@
 import json
 import logging
 from typing import Any, Callable
-from errors import ToolCallError
+from utils.errors import ToolCallError
 
 
 logger = logging.getLogger(__name__)
