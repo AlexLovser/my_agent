@@ -1,0 +1,6 @@
+.env
+.adk/
+venv/
+__pycache__/
+.zed
+.pyrightconfig.json
