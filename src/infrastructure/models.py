@@ -33,12 +33,13 @@ class Level(BaseModel, NameObligatoryMixin):
     name: str
     floor_number: int
 
-    @field_validator('floor_number')
-    @classmethod
-    def floor_number_positive(cls, v: int) -> int:
-        if v < 0:
-            raise ValueError('floor_number must be positive or zero')
-        return v
+    # I had to comment this because we can have negative floors
+    # @field_validator('floor_number')
+    # @classmethod
+    # def floor_number_positive(cls, v: int) -> int:
+    #     if v < 0:
+    #         raise ValueError('floor_number must be positive or zero')
+    #     return v
 
 class DataBase(BaseModel):
     spaces: list[Space]
