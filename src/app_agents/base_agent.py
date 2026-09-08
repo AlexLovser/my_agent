@@ -1,11 +1,12 @@
 import asyncio
 import os
-from dotenv import load_dotenv
 from agents import Agent, Runner, function_tool
+import base64
+from pathlib import Path
 
-
-load_dotenv()
-
+def encode_image(path: str) -> str:
+    data = Path(path).read_bytes()
+    return base64.b64encode(data).decode("utf-8")
 
 class BaseAgent:
     SYSTEM_PROMPT = ""
@@ -19,7 +20,7 @@ class BaseAgent:
             self.model_name = "gpt-4o-mini"
 
         if not self.token:
-            raise ValueError("CHAT_GPT_KEY is required")
+            raise ValueError("OPENAI_API_KEY is required")
 
         os.environ["OPENAI_API_KEY"] = self.token
 
@@ -30,22 +31,34 @@ class BaseAgent:
             tools=[function_tool(tool) for tool in self.tools],
         )
 
+    def preprare_input_data(self, file_path: str) -> str:
+        # jpeg/png/webp/gif — обычно ок
+        return f"data:image/jpeg;base64,{encode_image(file_path)}"
+
     def create_chat(self) -> list[str]:
         return []
 
-    def ask(self, question: str, chat: list[str] | None = None, config: dict | None = None) -> str | None:
-        if chat is None:
-            prompt = question
-        else:
-            chat.append("USER: " + question)
-            prompt = "\n".join(chat)
+    def ask_with_image(self, text: str, image_path: str, chat: list | None = None) -> str:
+        image_url = self.preprare_input_data(image_path)
 
-        result = asyncio.run(Runner.run(self.agent, prompt))
+        user_message = {
+            "role": "user",
+            "content": [
+                {"type": "input_text", "text": text},
+                {"type": "input_image", "image_url": image_url},
+            ],
+        }
+
+        if chat is None:
+            messages = [user_message]
+        else:
+            chat.append(user_message)
+            messages = chat
+
+        result = asyncio.run(Runner.run(self.agent, input=messages))
         answer = result.final_output
 
-        if isinstance(answer, str):
-            if chat is not None:
-                chat.append("AGENT: " + answer)
-            return answer.strip()
+        if chat is not None:
+            chat.append({"role": "assistant", "content": answer})
 
-        return str(answer) if answer is not None else None
+        return answer

@@ -22,11 +22,10 @@ class Space(BaseModel, NameObligatoryMixin):
     @field_validator('non_visit_reason')
     @classmethod
     def non_visit_reason_clear(cls, v: str | None) -> str | None:
-        if v is not None and not v.strip():
+        if v is None:
             return None
-
-        return v
-
+        v = v.strip()
+        return v if v else None
 
 class Level(BaseModel, NameObligatoryMixin):
     level_id: int
