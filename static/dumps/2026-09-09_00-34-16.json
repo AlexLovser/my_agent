@@ -1,0 +1,90 @@
+{
+    "spaces": [
+        {
+            "space_id": 1,
+            "name": "Master Bedroom",
+            "level_id": 1,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 2,
+            "name": "En-Suite Bath",
+            "level_id": 1,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 3,
+            "name": "Pantry",
+            "level_id": 1,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 4,
+            "name": "Laundry Room",
+            "level_id": 1,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 5,
+            "name": "Half Bath",
+            "level_id": 1,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 6,
+            "name": "Open Living Room",
+            "level_id": 1,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 7,
+            "name": "Kitchen",
+            "level_id": 1,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 8,
+            "name": "Bedroom 2",
+            "level_id": 2,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 9,
+            "name": "Bedroom 3",
+            "level_id": 2,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 10,
+            "name": "Linen Closet",
+            "level_id": 2,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 11,
+            "name": "Loft/Flex Space",
+            "level_id": 2,
+            "non_visit_reason": null
+        },
+        {
+            "space_id": 12,
+            "name": "Costh",
+            "level_id": 2,
+            "non_visit_reason": null
+        }
+    ],
+    "levels": [
+        {
+            "level_id": 1,
+            "name": "First Floor",
+            "floor_number": 1
+        },
+        {
+            "level_id": 2,
+            "name": "Second Floor",
+            "floor_number": 2
+        }
+    ],
+    "levels_inc": 3,
+    "spaces_inc": 13
+}

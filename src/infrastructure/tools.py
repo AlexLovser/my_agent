@@ -55,6 +55,32 @@ def dto_decorator(func):
         return dto_to_json(result)
     return wrapper
 
+
+########################################################################################
+# Dump tools
+########################################################################################
+
+@log_call
+@dto_decorator
+@error_decorator
+def dump_db():
+    Repo.dump_db()
+    return Response(message="DB dumped", data=[], status=Status.SUCCESS)
+
+@log_call
+@dto_decorator
+@error_decorator
+def get_dumps_list():
+    return Response(message="Dumps list", data=Repo.dumps_list(), status=Status.SUCCESS)
+
+@log_call
+@dto_decorator
+@error_decorator
+def load_db(file_path: str):
+    Repo.load_db(file_path)
+    return Response(message="DB loaded", data=[], status=Status.SUCCESS)
+
+
 ########################################################################################
 # Level tools
 ########################################################################################
@@ -74,6 +100,12 @@ def get_level(*, name: str | None = None, level_id: int | None = None):
     if result:
         return Response(message="Level found", data=[result], status=Status.SUCCESS)
     return Response(message="Level not found", data=[], status=Status.ERROR)
+
+@log_call
+@dto_decorator
+@error_decorator
+def list_levels():
+    return Response(message="Levels list", data=Repo.list_levels(), status=Status.SUCCESS)
 
 
 
@@ -166,6 +198,12 @@ def get_space(*, name: str | None = None, space_id: int | None = None):
     if result:
         return Response(message="Space found", data=[result], status=Status.SUCCESS)
     return Response(message="Space not found", data=[], status=Status.ERROR)
+
+@log_call
+@dto_decorator
+@error_decorator
+def list_spaces():
+    return Response(message="Spaces list", data=Repo.list_spaces(), status=Status.SUCCESS)
 
 
 @log_call

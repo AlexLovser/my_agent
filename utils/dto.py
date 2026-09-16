@@ -8,5 +8,5 @@ class Status(Enum):
 
 class Response(BaseModel):
     message: str
-    data: list[Level] | list[Space]
+    data: list[Level] | list[Space] | list[str]
     status: Status

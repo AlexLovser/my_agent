@@ -1,6 +1,6 @@
 from src.infrastructure.repository import print_db
 from src.infrastructure.runner import Runner
-from src.infrastructure.tools import insert_level, insert_space, update_level, update_space
+from src.infrastructure.tools import *
 
 TOOL_MAP = {
     "insert_level": insert_level,
@@ -28,4 +28,10 @@ if __name__ == "__main__":
         print(result)
 
     print()
+    print_db()
+
+
+    # dump_db()
+    print(get_dumps_list())
+    load_db("static/dumps/2026-09-08_16-18-20.json")
     print_db()

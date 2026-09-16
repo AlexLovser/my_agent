@@ -8,7 +8,12 @@ from src.infrastructure.tools import(
     insert_level,
     insert_space,
     update_level as _update_level,
-    update_space as _update_space
+    update_space as _update_space,
+    dump_db,
+    load_db,
+    get_dumps_list,
+    list_levels,
+    list_spaces,
 )
 
 # I had to implement this wrap to getting optional params as None
@@ -49,7 +54,7 @@ def update_space(payload: UpdateSpaceInput):
     return _update_space(**kwargs)
 
 
-class ImageAgent(BaseAgent):
+class UpgradedMainAgent(BaseAgent):
     SYSTEM_PROMPT = (
         "You manage house levels and spaces only through the provided tools. Tool outputs are the source of truth. "
         "Never invent data or assume ids: use only ids returned by successful tool calls. Dependent actions must be "
@@ -62,8 +67,22 @@ class ImageAgent(BaseAgent):
         "Before replying, reconcile your answer with the successful tool calls from this turn. Report only what was "
         "actually completed, and clearly separate anything failed or impossible with the reason. Do not claim full "
         "completion unless every requested action was confirmed by successful tool results."
+        """
+        Session persistence:
+        - Each script run starts with an empty in-memory database.
+        - If the user refers to previous work, a previous session, or asks to modify
+        existing data, you MUST first call get_dumps_list, then load_db with the
+        correct dump file before any insert/update.
+        - To continue the most recent session, load the newest dump filename from
+        get_dumps_list (sort by timestamp in the filename).
+        - load_db path format is always: static/dumps/<filename>
+        - After load_db, use list_levels and list_spaces to inspect current state.
+        - Do NOT call get_level or get_space without name or id.
+        - At the end of successful work, ALWAYS call dump_db to save state.
+        """
         "---"
-        "You can get an image with a scheme of a house, so if he asks you you have to implement it in a db with provided tools"
+        "You can get an image with a blueprint or photo, so if he asks you you have to implement it in a db with provided tools"
+        "Do not respond to anything not related to the topic and clairify if you need more information or you can not implement an action"
     )
     model_name = settings.model_name
     token = settings.openai_api_key
@@ -72,9 +91,14 @@ class ImageAgent(BaseAgent):
         tools = [
             get_level,
             get_space,
+            list_levels,
+            list_spaces,
             insert_level,
             insert_space,
             update_level,
             update_space,
+            dump_db,
+            load_db,
+            get_dumps_list,
         ]
         super().__init__(tools=tools)

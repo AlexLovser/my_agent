@@ -38,6 +38,29 @@ class BaseAgent:
     def create_chat(self) -> list[str]:
         return []
 
+    def ask(self, text: str, chat: list | None = None) -> str:
+        user_message = {
+            "role": "user",
+            "content": [
+                {"type": "input_text", "text": text},
+            ],
+        }
+
+        if chat is None:
+            messages = [user_message]
+        else:
+            chat.append(user_message)
+            messages = chat
+
+        result = asyncio.run(Runner.run(self.agent, input=messages))
+        answer = result.final_output
+
+        if chat is not None:
+            chat.append({"role": "assistant", "content": answer})
+
+        return answer
+
+
     def ask_with_image(self, text: str, image_path: str, chat: list | None = None) -> str:
         image_url = self.preprare_input_data(image_path)
 

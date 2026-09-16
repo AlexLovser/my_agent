@@ -1,5 +1,8 @@
 from src.infrastructure.models import DataBase, Level, Space
 from utils.errors import *
+import json
+import datetime
+from pathlib import Path
 
 db: DataBase | None = None
 def init_db():
@@ -24,6 +27,29 @@ def print_db():
 
         print()
 
+
+def dump_db():
+    db = get_db()
+
+    path = f"static/dumps/{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(db.model_dump(), f, indent=4, ensure_ascii=False)
+
+
+
+def load_db(file_path: str):
+    global db
+    with open(file_path, "r", encoding="utf-8") as f:
+        db = DataBase.model_validate_json(f.read())
+
+    return db
+
+
+def dumps_list():
+    return sorted(
+        f"static/dumps/{f.name}"
+        for f in Path("static/dumps").glob("*.json")
+    )
 
 ########################################################################################
 # Level methods
@@ -69,6 +95,10 @@ def get_level(*, name: str | None = None, level_id: int | None = None, raise_exc
         return None
 
     raise ValueError("Either name or level_id must be provided")
+
+def list_levels():
+    db = get_db()
+    return db.levels
 
 
 def insert_level(*, name: str, floor_number: int):
@@ -159,6 +189,11 @@ def get_space(*, name: str | None = None, space_id: int | None = None, raise_exc
         return None
 
     raise ValueError("Either name or space_id must be provided")
+
+
+def list_spaces():
+    db = get_db()
+    return db.spaces
 
 
 def insert_space(name: str, level_id: int, non_visit_reason: str | None = None):
